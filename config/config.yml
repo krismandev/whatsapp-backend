@@ -1,0 +1,142 @@
+listenPort: :1900
+publicEndpointURL: http://localhost:1900
+apiHandlerEndpoint: http://localhost:1899
+websocketEndpoint: http://localhost:1927
+whatsappEventLogURL: http://localhost:1929
+ocsURL: http://localhost:1902
+appID: "5"
+
+dblist: 
+  msgdata:
+    dbType: mysql
+    dbUrl: krisman:maef0mei3uigh1U@tcp(127.0.0.1:30007)/whatsapp_dbconfig
+
+translogHeaders: 
+- hostname
+- userapi_id
+- source
+- bot_id
+- recipient
+- messageid
+- requestid
+- transid
+- referenceid
+- reply_to
+- has_file
+- flow
+- message
+- status
+- error_result
+- appid
+- chargedata
+- created_at
+
+ssdb:
+  #127.0.0.1:38888
+  url: ""
+  password:
+
+JWTSecretKey: EbLAw2LAB9N1V1Nm1qSDwOBE0QmqHEn2eT9Q
+useJWT: false
+requestTimeout: 5
+debugLevel: 4
+maxConcurrentProcessData: 1
+concurrentWaitLimit: 1
+maxFailedRequest: 3
+sleepDurationWhenFailed: 10
+waClientEndpoint: "http://localhost:8111"
+waClientPort: ":8111"
+waClientNamespace: ""
+publicStoragePath: "../whatsapp-api-handler/storage/"
+redisPrefix: WA
+maxBodyLogLength: 1024
+maximumTimeoutThreshold: 120 # jika dalam x detik ini tidak ada event log baru, node akan dishutdown
+autoReconnectEvery: 300 #seconds
+notRegisteredOnWAKeepDuration: 48 #hour
+
+# global redis key msgconfig
+msgConfig:
+  redisUrl: 127.0.0.1:30637
+  redisPassword:
+  db: 0
+  keyExpirationDuration: 0
+  sentinel:
+    masterName: #appsrvstl
+    sentinelPassword:
+    sentinelUrl: 
+    - 127.0.0.1:26379
+
+
+#aerospike configuration
+msgDataDriver: mysql
+msgData: 
+  aerospikeUrl: 127.0.0.1
+  aerospikePort: 3000
+  namespace: test
+  table: msgdata
+  ttl: 86400
+
+#redis msg state configuration
+msgState:
+  redisUrl: 127.0.0.1:30637
+  redisPassword:
+  db: 0
+  keyExpirationDuration: 0
+  eventStream: StateStream
+  groupName: StateReader
+  consumerName: StateConsumer
+  sentinel:
+    masterName: #appsrvstl
+    sentinelPassword:
+    sentinelUrl: 
+    - 127.0.0.1:26379
+
+# redis queue to receive data from frontend
+frontendMsg:
+  redisUrl: 127.0.0.1:30637
+  redisPassword:
+  db: 0
+  eventStream: FrontendMessage
+  groupName: FrontendReader
+  consumerName: FrontendCustomer
+  sentinel:
+    masterName: #appsrvstl
+    sentinelPassword:
+    sentinelUrl: 
+    - 127.0.0.1:26379
+
+# redis queue to receive frontend event that will be passed to API Handler
+frontendEvent:
+  redisUrl: 127.0.0.1:30637
+  redisPassword:
+  db: 0
+  eventStream: FrontendEvent
+  groupName: FrontendReader
+  consumerName: FrontendCustomer
+  sentinel:
+    masterName: #appsrvstl
+    sentinelPassword:
+    sentinelUrl: 
+    - 127.0.0.1:26379
+
+#redis will be used as backend queue from API handler
+useRedis: true
+useRedisSentinel: false
+redisSentinel:
+  masterName: #appsrvstl
+  sentinelPassword:
+  sentinelUrl: 
+  - 127.0.0.1:26379
+redis:
+  redisUrl: 127.0.0.1:30637
+  redisPassword:
+  db: 0
+  eventStream: TestEvent
+  groupName: Reader
+  consumerName: Consumer
+
+
+translog: ./log/wabackend
+log:
+  filenamePrefix: ./log/skeleton
+  level: debug
